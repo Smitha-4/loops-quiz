@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Loops Adventure Quiz!</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Fredoka for kid-friendly playful typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti for celebrations -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: 'Fredoka', cursive, sans-serif;
+            background: radial-gradient(circle at top, #18182f 0%, #0d0d1a 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+        }
+        .code-box {
+            font-family: monospace;
+            background-color: #0b0b14;
+            color: #38bdf8;
+            border: 1px solid #312e81;
+        }
+        .glow-card {
+            background: linear-gradient(135deg, #1e1e3f 0%, #13132b 100%);
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.15);
+            border: 2px solid #3730a3;
+        }
+        .pulse-subtle {
+            animation: pulseSubtle 2s infinite;
+        }
+        @keyframes pulseSubtle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+    </style>
+</head>
+<body class="text-slate-100 flex flex-col min-h-full">
+
+    <!-- Header / Navbar -->
+    <header class="bg-indigo-950/80 backdrop-blur-md text-white shadow-lg border-b border-indigo-900 py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <span class="text-3xl animate-bounce">🚀</span>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold tracking-wide bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">Code.org JS Loop Quest</h1>
+                    <p class="text-xs text-indigo-300">Master For Loops & While Loops!</p>
+                </div>
+            </div>
+            <div id="stats-badge" class="hidden bg-indigo-900/90 px-4 py-2 rounded-full border border-indigo-600 font-semibold text-sm flex items-center space-x-3 shadow-lg shadow-indigo-950">
+                <span class="text-cyan-300">⭐ Score: <span id="current-score" class="text-white font-bold">0</span></span>
+                <span class="text-amber-400">🔥 Streak: <span id="current-streak" class="text-white font-bold">0</span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-3xl w-full mx-auto p-4 md:p-6 flex flex-col justify-center">
+
+        <!-- Welcome / Mode Selection Screen -->
+        <section id="screen-welcome" class="glow-card rounded-3xl p-6 md:p-10 text-center">
+            <div class="inline-block bg-cyan-950 text-cyan-300 border border-cyan-800 px-4 py-1 rounded-full text-sm font-semibold mb-4 shadow-sm">
+                🎮 Code.org JavaScript Academy
+            </div>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">
+                Ready to Become a Loop Master? <span class="text-cyan-400">🤖</span>
+            </h2>
+            <p class="text-slate-300 text-base md:text-lg mb-8 max-w-xl mx-auto">
+                Join our friendly robot buddy on a 50-question epic dark-mode quest! Test your skills on <span class="text-cyan-400 font-bold">For Loops</span> (30 questions) and <span class="text-purple-400 font-bold">While Loops</span> (20 questions). Earn glowing stars and keep your streak alive! ✨
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                <div class="bg-indigo-950/60 p-6 rounded-2xl border-2 border-indigo-800/80 text-left flex flex-col justify-between hover:border-cyan-500 transition duration-300">
+                    <div>
+                        <div class="text-3xl mb-2">🔄</div>
+                        <h3 class="font-bold text-cyan-300 text-lg">Section 1: For Loops</h3>
+                        <p class="text-xs text-slate-300 mt-1">30 Questions covering counting, syntax, output prediction, and debugging.</p>
+                    </div>
+                    <div class="mt-4 text-xs font-semibold text-cyan-300 bg-cyan-950/80 border border-cyan-800 inline-block px-3 py-1 rounded-full self-start">
+                        Recommended First
+                    </div>
+                </div>
+
+                <div class="bg-purple-950/60 p-6 rounded-2xl border-2 border-purple-800/80 text-left flex flex-col justify-between hover:border-purple-500 transition duration-300">
+                    <div>
+                        <div class="text-3xl mb-2">⏱️</div>
+                        <h3 class="font-bold text-purple-300 text-lg">Section 2: While Loops</h3>
+                        <p class="text-xs text-slate-300 mt-1">20 Questions covering conditional loops, infinite loop traps, and debugging.</p>
+                    </div>
+                    <div class="mt-4 text-xs font-semibold text-purple-300 bg-purple-950/80 border border-purple-800 inline-block px-3 py-1 rounded-full self-start">
+                        Condition Masters
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="startQuiz('all')" class="bg-gradient-to-r from-cyan-500 via-indigo-600 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold py-4 px-8 rounded-2xl shadow-lg shadow-indigo-950 transform hover:-translate-y-1 transition duration-200 text-lg flex items-center justify-center space-x-2 border border-indigo-400/30">
+                    <span>🚀 Start Full 50-Q Quest</span>
+                </button>
+                <button onclick="startQuiz('for')" class="bg-indigo-900/80 hover:bg-indigo-800 text-cyan-300 font-bold py-3 px-6 rounded-2xl border border-indigo-700 transition duration-200 shadow-md">
+                    Play For Loops (30 Qs)
+                </button>
+                <button onclick="startQuiz('while')" class="bg-purple-900/80 hover:bg-purple-800 text-purple-200 font-bold py-3 px-6 rounded-2xl border border-purple-700 transition duration-200 shadow-md">
+                    Play While Loops (20 Qs)
+                </button>
+            </div>
+        </section>
+
+        <!-- Quiz Gameplay Screen -->
+        <section id="screen-quiz" class="hidden glow-card rounded-3xl p-6 md:p-8 flex flex-col">
+            <!-- Progress Bar & Details -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center text-sm font-semibold text-slate-400 mb-2">
+                    <span id="question-category-tag" class="bg-cyan-950 text-cyan-300 border border-cyan-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">For Loop</span>
+                    <span>Question <span id="current-q-num" class="text-white">1</span> of <span id="total-q-num" class="text-white">50</span></span>
+                </div>
+                <div class="w-full bg-slate-900 h-3 rounded-full overflow-hidden border border-indigo-900">
+                    <div id="progress-bar" class="bg-gradient-to-r from-cyan-400 to-indigo-500 h-full transition-all duration-300 rounded-full shadow-lg shadow-cyan-500/50" style="width: 2%;"></div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="mb-6">
+                <h3 id="question-text" class="text-xl md:text-2xl font-bold text-white mb-4 leading-snug">
+                    Question text goes here?
+                </h3>
+                <!-- Optional Code Snippet Box -->
+                <div id="code-snippet-container" class="hidden mb-4 p-4 rounded-xl code-box text-sm md:text-base overflow-x-auto shadow-inner">
+                    <pre><code id="code-snippet-text">for (var i = 0; i &lt; 5; i++) { ... }</code></pre>
+                </div>
+            </div>
+
+            <!-- Options Grid -->
+            <div id="options-container" class="grid grid-cols-1 gap-3 mb-6">
+                <!-- Dynamically injected option buttons -->
+            </div>
+
+            <!-- Explanation Box (Initially Hidden) -->
+            <div id="explanation-container" class="hidden bg-slate-900/90 border-2 border-indigo-900 rounded-2xl p-4 mb-6 transition-all duration-300 shadow-lg">
+                <div class="flex items-center space-x-2 font-bold mb-1" id="explanation-header">
+                    <span id="explanation-icon" class="text-xl">💡</span>
+                    <span id="explanation-title" class="text-base">Explanation</span>
+                </div>
+                <p id="explanation-text" class="text-sm text-slate-300 leading-relaxed">
+                    Explanation details will show up here.
+                </p>
+            </div>
+
+            <!-- Next Button (Initially Hidden) -->
+            <div class="flex justify-end">
+                <button id="next-btn" onclick="nextQuestion()" class="hidden bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold py-3 px-8 rounded-2xl shadow-lg shadow-indigo-950 transition duration-200 flex items-center space-x-2 border border-cyan-400/40">
+                    <span>Next Question</span>
+                    <span>➡️</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Results Screen -->
+        <section id="screen-results" class="hidden glow-card rounded-3xl p-6 md:p-10 text-center">
+            <div class="text-6xl mb-4 animate-bounce" id="result-emoji">🏆</div>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-2">Quiz Completed!</h2>
+            <p id="result-subtitle" class="text-slate-300 text-base md:text-lg mb-6">You did an amazing job on your coding journey!</p>
+
+            <div class="bg-indigo-950/80 border-2 border-indigo-800 rounded-2xl p-6 max-w-sm mx-auto mb-8 shadow-inner shadow-indigo-950">
+                <div class="text-slate-400 text-sm font-semibold mb-1">Final Score</div>
+                <div class="text-4xl md:text-5xl font-extrabold text-cyan-400 mb-2">
+                    <span id="final-score">0</span> / <span id="final-total">50</span>
+                </div>
+                <div id="final-percentage" class="text-indigo-200 font-bold text-sm bg-indigo-900/80 border border-indigo-700 py-1 px-3 rounded-full inline-block">
+                    Accuracy: 0%
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="restartQuiz()" class="bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold py-3 px-8 rounded-2xl shadow-lg transition duration-200 border border-cyan-400/40">
+                    🔄 Try Again
+                </button>
+                <button onclick="reviewMistakes()" id="review-btn" class="hidden bg-amber-600 hover:bg-amber-500 text-white font-bold py-3 px-8 rounded-2xl shadow-lg transition duration-200 border border-amber-400/40">
+                    🔍 Review Mistakes
+                </button>
+                <button onclick="backToHome()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-3 px-8 rounded-2xl transition duration-200 border border-slate-700">
+                    🏠 Home
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-500 border-t border-indigo-950">
+        Made with ❤️ in Dark Mode for 10-year-old Code.org JavaScript Explorers!
+    </footer>
+
+    <!-- JavaScript Data and Game Engine -->
+    <script>
+        // 50 Total Questions Database
+        // Questions 1-30: For Loops (Theory, Debugging, Syntax, Output Prediction)
+        // Questions 31-50: While Loops (Conditionals, Infinite Loops, Output, Debugging)
+        const allQuestions = [
+            // --- SECTION 1: FOR LOOPS (30 Questions) ---
+            {
+                section: "for",
+                type: "Theory",
+                question: "What is the main purpose of a 'for' loop in Code.org JavaScript?",
+                code: null,
+                options: [
+                    "To repeat a block of code a specific number of times.",
+                    "To ask the user a question on the screen.",
+                    "To color the background red or blue.",
+                    "To stop the program from running forever."
+                ],
+                correct: 0,
+                explanation: "A for loop lets you repeat a block of instructions over and over again without writing the same code many times!"
+            },
+            {
+                section: "for",
+                type: "Syntax",
+                question: "In a standard Code.org for loop, what are the three parts inside the parentheses separated by semicolons?",
+                code: "for (var i = 0; i < 10; i++) { ... }",
+                options: [
+                    "Initialization, Condition, Increment",
+                    "Start, Stop, Color",
+                    "Variable, Function, Return",
+                    "Input, Output, Process"
+                ],
+                correct: 0,
+                explanation: "The three parts are: Initialization (var i = 0), Condition (i < 10), and Increment (i++)."
+            },
+            {
+                section: "for",
+                type: "Output Prediction",
+                question: "What numbers will this loop print to the console?",
+                code: "for (var i = 0; i < 3; i++) {\n  console.log(i);\n}",
+                options: [
+                    "0, 1, 2",
+                    "1, 2, 3",
+                    "0, 1, 2, 3",
+                    "1, 2"
+                ],
+                correct: 0,
+                explanation: "It starts at 0 and loops while i < 3. So it logs 0, then 1, then 2, and stops before reaching 3!"
+            },
+            {
+                section: "for",
+                type: "Output Prediction",
+                question: "How many times will 'Hello!' be printed?",
+                code: "for (var i = 1; i <= 5; i++) {\n  console.log('Hello!');\n}",
+                options: [
+                    "4 times",
+                    "5 times",
+                    "6 times",
+                    "1 time"
+                ],
+                correct: 1,
+                explanation: "Since i starts at 1 and goes up through 5 (due to <= 5), the loop runs exactly 5 times."
+            },
+            {
+                section: "for",
+                type: "Theory",
+                question: "What does 'i++' mean at the end of a for loop declaration?",
+                code: "i++",
+                options: [
+                    "It increases the value of i by 1 after each loop iteration.",
+                    "It restarts the computer.",
+                    "It decreases the value of i by 1.",
+                    "It adds a new image to the screen."
+                ],
+                correct: 0,
+                explanation: "'i++' is shorthand for 'i = i + 1', which steps forward by 1 every time the loop completes a round."
+            },
+            {
+                section: "for",
+                type: "Output Prediction",
+                question: "What will be printed when this loop runs?",
+                code: "for (var i = 2; i <= 8; i += 2) {\n  console.log(i);\n}",
+                options: [
+                    "2, 4, 6, 8",
+                    "2, 3, 4, 5, 6, 7, 8",
+                    "0, 2, 4, 6, 8",
+                    "4, 6, 8"
+                ],
+                correct: 0,
+                explanation: "i starts at 2 and increases by 2 each time (i += 2), printing 2, 4, 6, and 8!"
+            },
+            {
+                section: "for",
+                type: "Debugging",
+                question: "Spot the bug! Why won't this loop stop running (Infinite Loop Trap)?",
+                code: "for (var i = 0; i < 5; i--) {\n  console.log(i);\n}",
+                options: [
+                    "Using 'i--' instead of 'i++' makes i smaller (-1, -2...), so i < 5 is always true!",
+                    "There is no semicolon anywhere.",
+                    "The variable name must always be 'x'.",
+                    "Console.log cannot be used inside loops."
+                ],
+                correct: 0,
+                explanation: "Because i decreases (i--), it moves further away from 5, creating an infinite loop that crashes or freezes the app!"
+            },
+            {
+                section: "for",
+                type: "Output Prediction",
+                question: "What is the final value of sum after this loop finishes?",
+                code: "var sum = 0;\nfor (var i = 1; i <= 3; i++) {\n  sum = sum + i;\n}\nconsole.log(sum);",
+                options: [
+                    "3",
+                    "6",
+                    "10",
+                    "1"
+                ],
+                correct: 1,
+                explanation: "Step 1: sum = 0 + 1 = 1. Step 2: sum = 1 + 2 = 3. Step 3: sum = 3 + 3 = 6."
+            },
+            {
+                section: "for",
+                type: "Syntax Correction",
+                question: "Which of the following is the CORRECT way to write a for loop header in Code.org?",
+                code: null,
+                options: [
+                    "for (var i = 0; i < 10; i++)",
+                    "for i = 0 to 10",
+                    "loop (var i = 0; i < 10)",
+                    "for (var i < 10; i = 0)"
+                ],
+                correct: 0,
+                explanation: "JavaScript requires parentheses containing the initialization, condition, and increment separated by semicolons."
+            },
+            {
+                section: "for",
+                type: "Output Prediction",
+                question: "What numbers are printed by this countdown loop?",
+                code: "for (var i = 5; i > 0; i--) {\n  console.log(i);\n}",
+                options: [
+                    "5, 4, 3, 2, 1",
+                    "4, 3, 2, 1, 0",
+                    "5, 4, 3, 2, 1, 0",
+                    "1, 2, 3, 4, 5"
+                ],
+                correct: 0,
+                explanation: "It starts at 5, checks if i > 0, prints i, and then decreases by 1 (i--) until it hits 1."
+            },
+            {
+                section: "for",
+                type: "Theory",
+                question: "What is the loop variable (often named 'i') usually used for?",
+                code: null,
+                options: [
+                    "To keep track of how many times the loop has run or as an index.",
+                    "To store the user's password.",
+                    "To play background music.",
+                    "To change the web browser color."
+                ],
+                correct: 0,
+                explanation: "'i' stands for index or iteration counter. It keeps track of where we are in our loop count!"
+            },
+            {
+                section: "for",
+                type: "Debugging",
+                question: "Why does this loop NOT execute even once?",
+                code: "for (var i = 10; i < 5; i++) {\n  console.log(i);\n}",
+                options: [
+                    "The starting condition (i = 10) is already not less than 5!",
+                    "i++ should be i--.",
+                    "Variables cannot start at 10.",
+                    "Missing console.error"
+                ],
+                correct: 0,
+                explanation: "The condition 'i < 5' is checked right away. Since 10 is not less than 5, the loop body is skipped entirely."
+            },
+            {
+                section: "for",
+                type: "Output Prediction",
+                question: "How many stars (*) will be printed in total?",
+                code: "for (var i = 0; i < 4; i++) {\n  console.log('*');\n}",
+                options: [
+                    "3 stars",
+                    "4 stars",
+                    "5 stars",
+                    "0 stars"
+                ],
+                correct: 1,
+                explanation: "i goes through 0, 1, 2, 3 — exactly 4 iterations, printing 4 stars."
+            },
+            {
+                section: "for",
+                type: "Theory",
+                question: "In Code.org App Lab, what can loops be extremely useful for?",
+                code: null,
+                options: [
+                    "Creating multiple UI elements (like buttons or images) on the screen in a neat row or grid automatically.",
+                    "Making the computer screen turn off.",
+                    "Deleting all code in your project.",
+                    "Making your app run slower on purpose."
+                ],
+                correct: 0,
+                explanation: "Loops are great for generating multiple UI elements, drawing patterns, or processing lists of data without writing repetitive code!"
+            },
+            {
+                section: "for",
+                type: "Output Prediction",
+                question: "What is the final value printed by this code?",
+                code: "var count = 0;\nfor (var i = 0; i < 10; i += 3) {\n  count++;\n}\nconsole.log(count);",
+                options: [
+                    "4 (i values: 0, 3, 6, 9)",
+                    "3 (i values: 0, 3, 6)",
+                    "10",
+                    "9"
+                ],
+                correct: 0,
+                explanation: "i takes values 0, 3, 6, 9 (4 times total), so count++ runs 4 times."
+            },
+            {
+                section: "for",
+                type: "Debugging",
+                question: "What is wrong with this loop syntax?",
+                code: "for var i = 0; i < 5; i++ {\n  console.log(i);\n}",
+                options: [
+                    "Missing parentheses around (var i = 0; i < 5; i++)",
+                    "Using console.log instead of print",
+                    "The variable i is missing its value",
+                    "Nothing is wrong"
+                ],
+                correct: 0,
+                explanation: "In JavaScript, the three loop control statements must always be enclosed inside parentheses after the word 'for'."
+            },
+            {
+                section: "for",
+                type: "Output Prediction",
+                question: "What does this code print?",
+                code: "for (var i = 1; i <= 4; i++) {\n  console.log(i * 2);\n}",
+                options: [
+                    "2, 4, 6, 8",
+                    "1, 2, 3, 4",
+                    "2, 3, 4, 5",
+                    "1, 3, 5, 7"
+                ],
+                correct: 0,
+                explanation: "i is 1 (1*2=2), 2 (2*2=4), 3 (3*2=6), 4 (4*2=8)."
+            },
+            {
+                section: "for",
+                type: "Theory",
+                question: "What happens if you forget to include an increment part (like i++) in your for loop?",
+                code: "for (var i = 0; i < 10; ) {\n  console.log(i);\n}",
+                options: [
+                    "i never changes, so the condition i < 10 stays true forever (Infinite Loop!).",
+                    "The computer automatically adds i++ for you.",
+                    "The loop runs only once.",
+                    "The code will fail syntax check immediately."
+                ],
+                correct: 0,
+                explanation: "Without an increment or update statement, i stays 0 forever, causing an infinite loop."
+            },
+            {
+                section: "for",
+                type: "Output Prediction",
+                question: "What is printed by this loop?",
+                code: "for (var i = 3; i < 3; i++) {\n  console.log(i);\n}",
+                options: [
+                    "Nothing at all",
+                    "3",
+                    "0, 1, 2, 3",
+                    "Error"
+                ],
+                correct: 0,
+                explanation: "i starts at 3, but the condition is i < 3. Since 3 is not less than 3, it prints nothing!"
+            },
+            {
+                section: "for",
+                type: "Syntax",
+                question: "Which operator is used to increment a variable by 1 quickly in JavaScript?",
+                code: "i++",
+                options: [
+                    "++",
+                    "--",
+                    "**",
+                    "&&"
+                ],
+                correct: 0,
+                explanation: "The '++' operator is the increment operator in JavaScript."
+            },
+            {
+                section: "for",
+                type: "Output Prediction",
+                question: "What is the output of this loop?",
+                code: "for (var i = 0; i < 5; i = i + 2) {\n  console.log(i);\n}",
+                options: [
+                    "0, 2, 4",
+                    "0, 1, 2, 3, 4",
+                    "1, 3, 5",
+                    "2, 4"
+                ],
+                correct: 0,
+                explanation: "i starts at 0, then 2, then 4. When i becomes 6, 6 < 5 is false, so it stops."
+            },
+            {
+                section: "for",
+                type: "Theory",
+                question: "Can you put one 'for' loop inside another 'for' loop? (Nested Loops)",
+                code: "for (var i = 0; i < 3; i++) {\n  for (var j = 0; j < 3; j++) { }\n}",
+                options: [
+                    "Yes! This is called a nested loop and is great for grids or tables.",
+                    "No, JavaScript does not allow loops inside loops.",
+                    "Only if you use the word 'nested' instead of 'for'.",
+                    "Only in Python, not in JavaScript."
+                ],
+                correct: 0,
+                explanation: "Nested loops are extremely powerful for creating 2D grids, game boards, or multiplication tables!"
+            },
+            {
+                section: "for",
+                type: "Output Prediction",
+                question: "What is the final value of total?",
+                code: "var total = 5;\nfor (var i = 0; i < 3; i++) {\n  total += 2;\n}\nconsole.log(total);",
+                options: [
+                    "11",
+                    "5",
+                    "8",
+                    "6"
+                ],
+                correct: 0,
+                explanation: "Starts at 5. Loop runs 3 times, adding 2 each time (+2, +2, +2 = +6). 5 + 6 = 11."
+            },
+            {
+                section: "for",
+                type: "Debugging",
+                question: "Why does this code cause a SyntaxError?",
+                code: "for (var i = 0, i < 5, i++) {\n  console.log(i);\n}",
+                options: [
+                    "The three parts inside the for loop header must be separated by semicolons (;), not commas (,).",
+                    "Variables cannot be named i.",
+                    "Console.log needs a semicolon at the end.",
+                    "There is nothing wrong."
+                ],
+                correct: 0,
+                explanation: "For loop headers require semicolons (;) between initialization, condition, and increment, not commas."
+            },
+            {
+                section: "for",
+                type: "Output Prediction",
+                question: "How many times does 'Looping' print?",
+                code: "for (var i = 10; i >= 8; i--) {\n  console.log('Looping');\n}",
+                options: [
+                    "3 times (for i = 10, 9, 8)",
+                    "2 times",
+                    "10 times",
+                    "Infinite times"
+                ],
+                correct: 0,
+                explanation: "i takes values 10, 9, and 8. When i is 7, 7 >= 8 is false. That's 3 times!"
+            },
+            {
+                section: "for",
+                type: "Theory",
+                question: "When should you choose a 'for' loop over other structures?",
+                code: null,
+                options: [
+                    "When you know beforehand exactly how many times you want the code to repeat.",
+                    "When you want the program to run only when the user clicks a mouse button.",
+                    "When you don't care if the program crashes.",
+                    "When writing single-line math calculations."
+                ],
+                correct: 0,
+                explanation: "For loops are best when the exact number of repetitions is known in advance."
+            },
+            {
+                section: "for",
+                type: "Output Prediction",
+                question: "What does this snippet output?",
+                code: "for (var i = 0; i < 3; i++) {\n  console.log('A' + i);\n}",
+                options: [
+                    "A0, A1, A2",
+                    "A1, A2, A3",
+                    "AAA",
+                    "0A, 1A, 2A"
+                ],
+                correct: 0,
+                explanation: "String concatenation combines 'A' with 0, then 1, then 2, giving A0, A1, A2."
+            },
+            {
+                section: "for",
+                type: "Debugging",
+                question: "What is wrong with this loop condition?",
+                code: "for (var i = 0; i = 10; i++) {\n  console.log(i);\n}",
+                options: [
+                    "Using '=' (assignment) instead of '<' or '==' makes i always equal 10, causing an infinite loop!",
+                    "You cannot use numbers above 5.",
+                    "i++ must be written as ++i.",
+                    "Nothing is wrong."
+                ],
+                correct: 0,
+                explanation: "'i = 10' assigns 10 to i instead of comparing. This causes logic errors or infinite loops."
+            },
+            {
+                section: "for",
+                type: "Output Prediction",
+                question: "What is the value of x after this loop?",
+                code: "var x = 0;\nfor (var i = 1; i <= 4; i++) {\n  x += i;\n}",
+                options: [
+                    "10 (1 + 2 + 3 + 4)",
+                    "4",
+                    "0",
+                    "8"
+                ],
+                correct: 0,
+                explanation: "x accumulates 1 + 2 + 3 + 4 = 10."
+            },
+            {
+                section: "for",
+                type: "Theory",
+                question: "What happens right after the loop condition becomes false?",
+                code: null,
+                options: [
+                    "The loop stops running, and the program moves on to the code immediately after the loop block.",
+                    "The program restarts from the very beginning.",
+                    "An error message automatically pops up.",
+                    "The computer shuts down."
+                ],
+                correct: 0,
+                explanation: "Once the condition evaluates to false, the loop exits, and code execution continues with the next statement below the loop."
+            },
+
+            // --- SECTION 2: WHILE LOOPS (20 Questions) ---
+            {
+                section: "while",
+                type: "Theory",
+                question: "What is a 'while' loop in JavaScript?",
+                code: null,
+                options: [
+                    "A loop that repeats a block of code as long as a specified condition remains true.",
+                    "A loop that runs exactly 10 times and never more.",
+                    "A command used to create animations in 3D.",
+                    "A way to pause your game for 5 seconds."
+                ],
+                correct: 0,
+                explanation: "While loops keep running continuously as long as their condition is true. They are great when you don't know the exact count in advance!"
+            },
+            {
+                section: "while",
+                type: "Syntax",
+                question: "Which of the following shows the correct syntax for a while loop?",
+                code: null,
+                options: [
+                    "while (condition) { ... }",
+                    "while {condition} do [ ... ]",
+                    "repeat while (condition) { ... }",
+                    "loop while (condition) { ... }"
+                ],
+                correct: 0,
+                explanation: "In JavaScript, a while loop uses the keyword 'while', followed by a condition in parentheses, and code blocks in curly braces."
+            },
+            {
+                section: "while",
+                type: "Output Prediction",
+                question: "What will this while loop print?",
+                code: "var count = 0;\nwhile (count < 3) {\n  console.log(count);\n  count++;\n}",
+                options: [
+                    "0, 1, 2",
+                    "1, 2, 3",
+                    "0, 1, 2, 3",
+                    "3, 2, 1"
+                ],
+                correct: 0,
+                explanation: "count starts at 0. It logs 0, increments to 1. Logs 1, increments to 2. Logs 2, increments to 3. Then 3 < 3 is false, so it stops!"
+            },
+            {
+                section: "while",
+                type: "Debugging",
+                question: "Why does this while loop cause an Infinite Loop?",
+                code: "var score = 5;\nwhile (score > 0) {\n  console.log('Playing...');\n}",
+                options: [
+                    "The variable 'score' is never decreased inside the loop, so score > 0 is always true!",
+                    "Score must start at 10.",
+                    "While loops cannot use console.log.",
+                    "Missing a semicolon after while."
+                ],
+                correct: 0,
+                explanation: "Because score is never updated inside the loop, it remains 5 forever, causing an endless infinite loop."
+            },
+            {
+                section: "while",
+                type: "Theory",
+                question: "How is a 'while' loop different from a 'for' loop?",
+                code: null,
+                options: [
+                    "While loops are usually used when we don't know the exact number of iterations in advance (like waiting for user input or random chance).",
+                    "For loops cannot use numbers.",
+                    "While loops run faster than for loops.",
+                    "There is no difference at all."
+                ],
+                correct: 0,
+                explanation: "While loops are condition-driven (running until something happens), whereas for loops are counter-driven (running a specific number of times)."
+            },
+            {
+                section: "while",
+                type: "Output Prediction",
+                question: "What numbers are printed by this code?",
+                code: "var x = 1;\nwhile (x <= 5) {\n  console.log(x);\n  x += 2;\n}",
+                options: [
+                    "1, 3, 5",
+                    "1, 2, 3, 4, 5",
+                    "1, 2, 4",
+                    "2, 4"
+                ],
+                correct: 0,
+                explanation: "x starts at 1 (prints 1), becomes 3 (prints 3), becomes 5 (prints 5), then becomes 7 and stops."
+            },
+            {
+                section: "while",
+                type: "Theory",
+                question: "What happens if the condition in a while loop is FALSE right from the very start?",
+                code: "var lives = 0;\nwhile (lives > 0) { console.log('Alive'); }",
+                options: [
+                    "The loop body never executes even once.",
+                    "The computer throws an immediate error.",
+                    "It runs once by default.",
+                    "It turns into an infinite loop."
+                ],
+                correct: 0,
+                explanation: "Just like a for loop, if the while condition is false initially, the code inside is skipped entirely."
+            },
+            {
+                section: "while",
+                type: "Output Prediction",
+                question: "What is the final value of num?",
+                code: "var num = 10;\nwhile (num > 7) {\n  num--;\n}\nconsole.log(num);",
+                options: [
+                    "7",
+                    "10",
+                    "8",
+                    "6"
+                ],
+                correct: 0,
+                explanation: "num starts at 10 (>7). Decreases to 9, then 8, then 7. When num is 7, 7 > 7 is false, so it stops at 7."
+            },
+            {
+                section: "while",
+                type: "Debugging",
+                question: "Spot the error in this while loop setup:",
+                code: "var i = 0;\nwhile (i < 5)\n  console.log(i);\n  i++;",
+                options: [
+                    "Missing curly braces { }! Only the console.log is inside the loop, leaving i++ outside, causing an infinite loop.",
+                    "Variables cannot be named i in while loops.",
+                    "The condition should be i > 5.",
+                    "Nothing is wrong."
+                ],
+                correct: 0,
+                explanation: "Without curly braces, only the very next line is part of the loop. i++ is left outside, meaning i never increases and it loops forever!"
+            },
+            {
+                section: "while",
+                type: "Output Prediction",
+                question: "How many times will 'Go!' be printed?",
+                code: "var timer = 3;\nwhile (timer > 0) {\n  console.log('Go!');\n  timer--;\n}",
+                options: [
+                    "3 times",
+                    "2 times",
+                    "4 times",
+                    "0 times"
+                ],
+                correct: 0,
+                explanation: "timer starts at 3, runs for 3, 2, and 1 — exactly 3 times."
+            },
+            {
+                section: "while",
+                type: "Theory",
+                question: "Which keyword can be used to abruptly break out of a while loop early?",
+                code: "break;",
+                options: [
+                    "break",
+                    "stop",
+                    "exit",
+                    "end"
+                ],
+                correct: 0,
+                explanation: "The 'break;' statement immediately exits out of a loop, even if the loop condition is still true."
+            },
+            {
+                section: "while",
+                type: "Output Prediction",
+                question: "What does this code output?",
+                code: "var n = 2;\nwhile (n < 10) {\n  n = n * 2;\n}\nconsole.log(n);",
+                options: [
+                    "16",
+                    "8",
+                    "10",
+                    "32"
+                ],
+                correct: 0,
+                explanation: "n = 2 -> 4 -> 8 -> 16. When n is 16, 16 < 10 is false, loop terminates, printing 16."
+            },
+            {
+                section: "while",
+                type: "Debugging",
+                question: "Why is this random number guessing simulation dangerous?",
+                code: "var guess = 3;\nwhile (guess !== 7) {\n  guess = randomNumber(1, 5);\n}",
+                options: [
+                    "Because randomNumber(1, 5) can NEVER return 7! The loop will run forever because 7 is impossible.",
+                    "Random numbers are illegal in JavaScript.",
+                    "Guess must be a string.",
+                    "There is no bug."
+                ],
+                correct: 0,
+                explanation: "If the random number only generates 1 through 5, it will never equal 7, creating an infinite loop trap!"
+            },
+            {
+                section: "while",
+                type: "Output Prediction",
+                question: "What is the output of this snippet?",
+                code: "var letters = 'A';\nwhile (letters.length < 4) {\n  letters += 'A';\n}\nconsole.log(letters);",
+                options: [
+                    "AAAA",
+                    "AAA",
+                    "AA",
+                    "AAAAA"
+                ],
+                correct: 0,
+                explanation: "Starts as 'A' (length 1). Loops until length is 4, adding 'A' each time ('AA', 'AAA', 'AAAA')."
+            },
+            {
+                section: "while",
+                type: "Theory",
+                question: "When is a while loop preferred over a for loop in Code.org app development?",
+                code: null,
+                options: [
+                    "When waiting for a user to click a specific button or until a random condition is met.",
+                    "When counting from 1 to 10 in order.",
+                    "When drawing shapes with a fixed width.",
+                    "When printing sequential numbers."
+                ],
+                correct: 0,
+                explanation: "While loops shine when repeating actions based on unpredictable events or conditions."
+            },
+            {
+                section: "while",
+                type: "Output Prediction",
+                question: "What is printed by this loop?",
+                code: "var p = 5;\nwhile (p > 5) {\n  console.log(p);\n  p--;\n}",
+                options: [
+                    "Nothing",
+                    "5",
+                    "5, 4, 3, 2, 1",
+                    "Error"
+                ],
+                correct: 0,
+                explanation: "p starts at 5, but the condition is p > 5. Since 5 is not greater than 5, it outputs nothing."
+            },
+            {
+                section: "while",
+                type: "Debugging",
+                question: "What bug is present here?",
+                code: "var k = 0;\nwhile (k < 3);\n{\n  console.log(k);\n  k++;\n}",
+                options: [
+                    "The semicolon right after `while (k < 3);` creates an empty loop body, making it an infinite loop!",
+                    "k must start at 1.",
+                    "Curly braces are forbidden.",
+                    "No bug exists."
+                ],
+                correct: 0,
+                explanation: "Putting a semicolon immediately after the while condition closes the loop with an empty statement, causing an infinite loop on k = 0!"
+            },
+            {
+                section: "while",
+                type: "Output Prediction",
+                question: "What is the final value of sum?",
+                code: "var sum = 0;\nvar i = 1;\nwhile (i <= 3) {\n  sum += i;\n  i++;\n}\nconsole.log(sum);",
+                options: [
+                    "6",
+                    "3",
+                    "5",
+                    "0"
+                ],
+                correct: 0,
+                explanation: "i = 1 (sum = 1), i = 2 (sum = 3), i = 3 (sum = 6). Total sum is 6."
+            },
+            {
+                section: "while",
+                type: "Theory",
+                question: "What does 'Infinite Loop' mean in programming?",
+                code: null,
+                options: [
+                    "A loop that never stops running because its stop condition is never met, freezing or crashing the program.",
+                    "A loop that runs 1 million times very quickly.",
+                    "A secret cheat code in Code.org.",
+                    "A loop that runs exactly once."
+                ],
+                correct: 0,
+                explanation: "An infinite loop runs forever, which can freeze your browser tab because the computer gets stuck repeating it."
+            },
+            {
+                section: "while",
+                type: "Output Prediction",
+                question: "What does this code print?",
+                code: "var val = 1;\nwhile (val < 16) {\n  val = val * 2;\n}\nconsole.log(val);",
+                options: [
+                    "16",
+                    "8",
+                    "32",
+                    "15"
+                ],
+                correct: 0,
+                explanation: "val = 1 -> 2 -> 4 -> 8 -> 16. When val is 16, 16 < 16 is false, so it stops and logs 16."
+            }
+        ];
+
+        // Quiz State Variables
+        let currentQuestions = [];
+        let currentIndex = 0;
+        let score = 0;
+        let streak = 0;
+        let userAnswers = []; // Store answers for review
+        let answeredCurrent = false;
+
+        // DOM Elements
+        const screenWelcome = document.getElementById('screen-welcome');
+        const screenQuiz = document.getElementById('screen-quiz');
+        const screenResults = document.getElementById('screen-results');
+        const statsBadge = document.getElementById('stats-badge');
+        const currentScoreEl = document.getElementById('current-score');
+        const currentStreakEl = document.getElementById('current-streak');
+        const qCategoryTag = document.getElementById('question-category-tag');
+        const currentQNumEl = document.getElementById('current-q-num');
+        const totalQNumEl = document.getElementById('total-q-num');
+        const progressBar = document.getElementById('progress-bar');
+        const questionTextEl = document.getElementById('question-text');
+        const codeSnippetContainer = document.getElementById('code-snippet-container');
+        const codeSnippetText = document.getElementById('code-snippet-text');
+        const optionsContainer = document.getElementById('options-container');
+        const explanationContainer = document.getElementById('explanation-container');
+        const explanationHeader = document.getElementById('explanation-header');
+        const explanationTitle = document.getElementById('explanation-title');
+        const explanationText = document.getElementById('explanation-text');
+        const nextBtn = document.getElementById('next-btn');
+
+        function startQuiz(mode) {
+            // Filter questions based on mode
+            if (mode === 'for') {
+                currentQuestions = allQuestions.filter(q => q.section === 'for');
+            } else if (mode === 'while') {
+                currentQuestions = allQuestions.filter(q => q.section === 'while');
+            } else {
+                currentQuestions = [...allQuestions];
+            }
+
+            // Shuffle questions for extra fun!
+            currentQuestions.sort(() => Math.random() - 0.5);
+
+            currentIndex = 0;
+            score = 0;
+            streak = 0;
+            userAnswers = [];
+
+            // Update UI screens
+            screenWelcome.classList.add('hidden');
+            screenResults.classList.add('hidden');
+            screenQuiz.classList.remove('hidden');
+            statsBadge.classList.remove('hidden');
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            answeredCurrent = false;
+            nextBtn.classList.add('hidden');
+            explanationContainer.classList.add('hidden');
+
+            const q = currentQuestions[currentIndex];
+
+            // Update progress & headers
+            currentQNumEl.textContent = currentIndex + 1;
+            totalQNumEl.textContent = currentQuestions.length;
+            const progressPercent = ((currentIndex) / currentQuestions.length) * 100;
+            progressBar.style.width = `${Math.max(progressPercent, 4)}%`;
+
+            if (q.section === 'for') {
+                qCategoryTag.textContent = `For Loop • ${q.type}`;
+                qCategoryTag.className = "bg-cyan-950 text-cyan-300 border border-cyan-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider";
+            } else {
+                qCategoryTag.textContent = `While Loop • ${q.type}`;
+                qCategoryTag.className = "bg-purple-950 text-purple-300 border border-purple-800 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider";
+            }
+
+            questionTextEl.textContent = q.question;
+
+            // Handle code snippet
+            if (q.code) {
+                codeSnippetContainer.classList.remove('hidden');
+                codeSnippetText.textContent = q.code;
+            } else {
+                codeSnippetContainer.classList.add('hidden');
+            }
+
+            // Load options
+            optionsContainer.innerHTML = '';
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-2xl border-2 border-indigo-900/80 bg-indigo-950/40 hover:border-cyan-400 hover:bg-indigo-900/60 font-medium text-slate-200 transition duration-200 flex items-center space-x-3 shadow-sm";
+                btn.innerHTML = `<span class="bg-indigo-900 text-cyan-300 font-bold w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 border border-indigo-700">${String.fromCharCode(65 + idx)}</span><span>${opt}</span>`;
+                btn.onclick = () => selectAnswer(idx, btn);
+                optionsContainer.appendChild(btn);
+            });
+
+            currentScoreEl.textContent = score;
+            currentStreakEl.textContent = streak;
+        }
+
+        function selectAnswer(selectedIndex, selectedBtn) {
+            if (answeredCurrent) return;
+            answeredCurrent = true;
+
+            const q = currentQuestions[currentIndex];
+            const isCorrect = (selectedIndex === q.correct);
+
+            // Record user answer
+            userAnswers.push({
+                question: q.question,
+                code: q.code,
+                options: q.options,
+                selected: selectedIndex,
+                correct: q.correct,
+                explanation: q.explanation,
+                isCorrect: isCorrect
+            });
+
+            const optionButtons = optionsContainer.children;
+
+            if (isCorrect) {
+                score++;
+                streak++;
+                selectedBtn.className = "w-full text-left p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-950/60 font-medium text-emerald-200 flex items-center space-x-3 shadow-lg shadow-emerald-950";
+                selectedBtn.firstElementChild.className = "bg-emerald-600 text-white font-bold w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 border border-emerald-400";
+                
+                // Trigger confetti celebration!
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.7 }
+                });
+            } else {
+                streak = 0;
+                selectedBtn.className = "w-full text-left p-4 rounded-2xl border-2 border-rose-500 bg-rose-950/60 font-medium text-rose-200 flex items-center space-x-3 shadow-lg shadow-rose-950";
+                selectedBtn.firstElementChild.className = "bg-rose-600 text-white font-bold w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 border border-rose-400";
+
+                // Highlight correct button
+                const correctBtn = optionButtons[q.correct];
+                correctBtn.className = "w-full text-left p-4 rounded-2xl border-2 border-emerald-500 bg-emerald-950/60 font-medium text-emerald-200 flex items-center space-x-3 shadow-lg shadow-emerald-950";
+                correctBtn.firstElementChild.className = "bg-emerald-600 text-white font-bold w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 border border-emerald-400";
+            }
+
+            // Disable all options
+            for (let btn of optionButtons) {
+                btn.disabled = true;
+                btn.style.cursor = 'default';
+            }
+
+            // Show explanation
+            explanationContainer.classList.remove('hidden');
+            if (isCorrect) {
+                explanationContainer.className = "bg-emerald-950/80 border-2 border-emerald-800 rounded-2xl p-4 mb-6 transition-all duration-300 shadow-lg";
+                document.getElementById('explanation-icon').textContent = "🎉";
+                document.getElementById('explanation-title').textContent = "Correct! Amazing Job!";
+                document.getElementById('explanation-title').className = "text-base text-emerald-300 font-bold";
+            } else {
+                explanationContainer.className = "bg-rose-950/80 border-2 border-rose-800 rounded-2xl p-4 mb-6 transition-all duration-300 shadow-lg";
+                document.getElementById('explanation-icon').textContent = "💡";
+                document.getElementById('explanation-title').textContent = "Not quite! Here is why:";
+                document.getElementById('explanation-title').className = "text-base text-rose-300 font-bold";
+            }
+            explanationText.textContent = q.explanation;
+
+            currentScoreEl.textContent = score;
+            currentStreakEl.textContent = streak;
+
+            // Show next button
+            nextBtn.classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex < currentQuestions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            screenQuiz.classList.add('hidden');
+            screenResults.classList.remove('hidden');
+            statsBadge.classList.add('hidden');
+
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('final-total').textContent = currentQuestions.length;
+
+            const percentage = Math.round((score / currentQuestions.length) * 100);
+            document.getElementById('final-percentage').textContent = `Accuracy: ${percentage}%`;
+
+            const resultEmoji = document.getElementById('result-emoji');
+            const resultSubtitle = document.getElementById('result-subtitle');
+            const reviewBtn = document.getElementById('review-btn');
+
+            // Check if there are mistakes to review
+            const mistakes = userAnswers.filter(a => !a.isCorrect);
+            if (mistakes.length > 0) {
+                reviewBtn.classList.remove('hidden');
+            } else {
+                reviewBtn.classList.add('hidden');
+            }
+
+            if (percentage === 100) {
+                resultEmoji.textContent = "👑";
+                resultSubtitle.textContent = "LEGENDARY! You got a perfect 100% score! You are a JavaScript Loop Grandmaster!";
+                confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
+            } else if (percentage >= 80) {
+                resultEmoji.textContent = "🌟";
+                resultSubtitle.textContent = "Fantastic work! You really know your way around loops!";
+            } else if (percentage >= 50) {
+                resultEmoji.textContent = "👍";
+                resultSubtitle.textContent = "Good effort! Keep practicing your loops and you'll be a pro in no time!";
+            } else {
+                resultEmoji.textContent = "💡";
+                resultSubtitle.textContent = "Loops can be tricky at first! Review your mistakes and try again!";
+            }
+        }
+
+        function reviewMistakes() {
+            // Filter userAnswers to only mistakes
+            currentQuestions = userAnswers.filter(a => !a.isCorrect).map(m => ({
+                section: 'for', // fallback tag
+                type: 'Review',
+                question: m.question,
+                code: m.code,
+                options: m.options,
+                correct: m.correct,
+                explanation: m.explanation
+            }));
+
+            currentIndex = 0;
+            score = 0;
+            streak = 0;
+
+            screenResults.classList.add('hidden');
+            screenQuiz.classList.remove('hidden');
+            statsBadge.classList.remove('hidden');
+
+            loadQuestion();
+        }
+
+        function restartQuiz() {
+            startQuiz('all');
+        }
+
+        function backToHome() {
+            screenResults.classList.add('hidden');
+            screenQuiz.classList.add('hidden');
+            statsBadge.classList.add('hidden');
+            screenWelcome.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
